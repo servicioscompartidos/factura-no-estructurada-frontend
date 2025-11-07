@@ -1,0 +1,61 @@
+.contentLogin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: var(--blue);
+    .contentInfoLogin{
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        border-radius: 10px;
+        padding: 32px 20px;
+        background: var(--white);
+        .contentLogo{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 50px;
+            margin-bottom: 40px;
+            img{
+                position: absolute;
+                width:180px;
+                height: auto;
+            }
+        }
+        .formLogin{
+            width: 100%;
+            margin-bottom: 10px;
+            ::ng-deep form .mat-mdc-form-field{
+                width: 100% !important;
+            }
+        }
+        .contentButton{
+            width: 100%;
+            height: 50px;
+            button{
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                outline: none;
+                border: none;
+                font-size: 16px;
+                background: var(--blue);
+                color: var(--white);
+                cursor: pointer;
+            }
+            button:active{
+                background: var(--blue-100);
+            }
+        }    
+    }
+
+}
+
+@media (min-width: 768px) {
+  .contentInfoLogin{
+    max-width: 400px;
+  }
+}

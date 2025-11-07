@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$Aplicacion_FacturacionNoEstructurada-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+  ),
+  density: (
+    scale: 0,
+  )
+));
+
+:root {
+  @include mat.all-component-themes($Aplicacion_FacturacionNoEstructurada-theme);
+}
+
+html, body { height: 100%; }
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  box-sizing: content-box;
+}
+
+:root{
+  --blue: #002E6D;
+  --blue-100: #053b88;
+  --black: #002E6D;
+  --extra-black: #231F20;
+  --bluemedium: #028CCF;
+  --bluestrong: #005895;
+  --apple-color: #E4E4E5;
+  --apple-color-200: #BEBEBE;
+  --apple-color-300: #949494;
+  --white: #FFFFFF;
+  --grey: #F3F3F3;
+  --grey-100: #f1eded;
+  --red: rgb(230, 16, 16);
+  --red-100: rgb(197, 21, 21);
+  --green: #008000;
+  --green-100: #037703;
+}
+
+

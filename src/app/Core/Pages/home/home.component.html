@@ -1,0 +1,145 @@
+<div class="contentHome">
+
+    <div class="contentTitle">
+        <span>Hola, {{authService.userLogin ?? 'Luis Samuel'}}.</span>
+        <mat-icon  style="width: 27px; height: 25px; margin-right: 15px; cursor: pointer;" class="btn_logout" svgIcon="logout_icon" (click)="logout()" matTooltip="Cerrar Sesión"></mat-icon>
+    </div>
+
+    <div class="contentUploadInvioces">
+        <span class="titleUpload">Carga de Facturas</span>
+
+        <mat-tab-group class="tap_group" mat-align-tabs="start" mat-stretch-tabs="false" (selectedTabChange)="onTabChanged($event)">
+            <mat-tab label="Inventario"> 
+                <div class="content_info_column">
+                    <span class="titleFilesUpload" style="margin-top: 15px;">Detalle</span>
+
+                    <mat-form-field appearance="outline" [floatLabel]="'always'"  class="input_selectSupplier" style="margin-top: 20px;">
+                        <mat-label>Proveedor</mat-label>
+                        <input type="text"
+                            placeholder="Buscar proveedor"
+                            matInput
+                            [formControl]="supplier"
+                            [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete" style="width: 100%;">
+                            @for (option of filteredOptions | async; track option) {
+                                <mat-option [value]="option">{{option}}</mat-option>
+                            }
+                        </mat-autocomplete>
+                    </mat-form-field>
+    
+                    <mat-form-field appearance="outline" style="margin-top: -10px;">
+                        <mat-label>Tipo de factura</mat-label>
+                        <mat-select (selectionChange)="typeInvoiceSelect($event, 'inventory')">
+                            @for (type of typesInvoices; track type) {
+                            <mat-option [value]="type">{{type.name}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <label for="upfiles">
+                        <div class="uploadFiles">
+                                <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"></mat-icon>
+                                <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+                        </div>
+                    </label>
+                    <input type="file" style="display: none;" (change)="onFilesSelected($event, 'inventary')" id="upfiles" accept="image/*" multiple>
+                </div>
+                
+                <div class="listFilesUpload">
+                    <span class="titleFilesUpload">Facturas cargadas</span>
+                    @for(item of listFiles; track item; let i = $index){
+                        <div class="contentFile" >
+                            <div class="infoFile">
+                                <mat-icon  style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
+                                <div class="contentDetail">
+                                    <span class="nameFile"><b>{{ item.name }}</b></span>
+                                    <span class="sizeFile"><b>Tamaño:</b> {{item.size}} </span>
+                                    @if( item.error.length > 0){
+                                        <span class="errorLoadFile" > {{item.error}} </span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="content_iconsFile">
+                                <div class="icon_viewFile">
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" ></mat-icon>
+                                </div>
+                                <div class="icon_deleteFile">
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'inventary')"></mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </mat-tab>
+            <mat-tab label="Gasto"> 
+                <div class="content_expenseInvoices">
+                    <div class="content_info_column">
+                        <span class="titleFilesUpload" style="margin-top: 15px;">Detalle</span>
+
+                        <mat-form-field appearance="outline" [floatLabel]="'always'"  class="input_selectSupplier" style="margin-top: 20px;">
+                            <mat-label>Proveedor</mat-label>
+                            <input type="text"
+                                placeholder="Buscar proveedor"
+                                matInput
+                                [formControl]="supplier"
+                                [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete" style="width: 100%;">
+                            @for (option of filteredOptions | async; track option) {
+                                <mat-option [value]="option">{{option}}</mat-option>
+                            }
+                            </mat-autocomplete>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="margin-top: -10px;">
+                            <mat-label>Tipo de factura</mat-label>
+                            <mat-select (selectionChange)="typeInvoiceSelect($event, 'bills')">
+                                @for (type of typesInvoices; track type.name) {
+                                <mat-option [value]="type">{{type.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+        
+                        <label for="upfiles">
+                            <div class="uploadFiles">
+                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"></mat-icon>
+                                    <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+                            </div>
+                        </label>
+                        <input type="file" style="display: none;" (change)="onFilesSelected($event, 'bills')" id="upfiles" accept="image/*" multiple>
+                    </div>
+
+                    <div class="listFilesUpload">
+                        <span class="titleFilesUpload">Facturas cargadas</span>
+                        <div class="contentFile" *ngFor="let item of listFilesBills; let i = index">
+                            <div class="infoFile">
+                                <mat-icon  style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
+                                <div class="contentDetail">
+                                    <span class="nameFile"><b>{{ item.name }}</b></span>
+                                    <span class="sizeFile"><b>Tamaño:</b> {{item.size}} </span>
+                                    @if( item.error.length > 0){
+                                        <span class="errorLoadFile" > {{item.error}} </span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="content_iconsFile">
+                                <div class="icon_viewFile">
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" ></mat-icon>
+                                </div>
+                                <div class="icon_deleteFile">
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'bills')"></mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+    </div>
+
+    <button class="buttonAddInvoices" type="button" (click)="sendInvoices()">
+        Enviar Facturas 
+        <!-- <mat-icon style="margin-left: 15px;"><mat-spinner diameter="25" color="accent"></mat-spinner></mat-icon> -->
+    </button>
+</div>

@@ -1,0 +1,39 @@
+<div class="contentLogin">
+  <div class="contentInfoLogin">
+
+    <div class="contentLogo">
+      <img src="/assets/uno-logo.webp" alt="logo UNO HONDURAS">
+    </div>
+    
+    <div class="formLogin" >
+      <span style="font-size: 18px; margin-bottom: 20px; display: inline-block; font-weight: bold;">¡BIENVENIDO(A)!</span>
+      
+      <form [formGroup]="formLogin">
+        <mat-form-field appearance="outline" >
+          <mat-label>USUARIO</mat-label>
+          <input matInput placeholder="INGRESE SU USUARIO" formControlName="user" autocomplete="off">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>CONTRASEÑA</mat-label>
+          <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password" placeholder="INGRESE SU CONTRASEÑA" />
+          <button
+            matIconButton
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+            style="border: none; background: none; margin-right: 8px;"
+          >
+            <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
+
+    </div>
+
+    <div class="contentButton">
+      <button type="button" (click)="login()">INICIAR SESIÓN</button>
+    </div>
+  </div>
+</div>
