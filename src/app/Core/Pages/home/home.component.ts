@@ -24,6 +24,11 @@ const UPLOAD=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fil
 <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
 </svg>`;
 
+const PHOTO=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+  <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
+  <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+</svg>`;
+
 const DELETE=`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
   <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -95,6 +100,11 @@ export class HomeComponent {
     );
 
     iconRegistry.addSvgIconLiteral(
+      'photo_icon',
+      sanitizer.bypassSecurityTrustHtml(PHOTO)
+    );
+
+    iconRegistry.addSvgIconLiteral(
       'delete_icon',
       sanitizer.bypassSecurityTrustHtml(DELETE)
     );
@@ -122,18 +132,22 @@ export class HomeComponent {
   }
 
   onFilesSelected(e:any, type:string){
-    this.listFiles = [];
-    this.listFilesBills = [];
+    e.preventDefault();
+
+    if(type != 'inventaryPhoto' && type != 'billsPhoto'){
+      this.listFiles = [];
+      this.listFilesBills = [];
+    }
 
     let input = e.target as HTMLInputElement;
     
     if (input.files && input.files.length > 0) {
       const archivos = Array.from(input.files);
-
+      
       archivos.forEach(file => {
         let sizeKb = (file.size/1000).toFixed(2);
-        if(type == 'inventary'){
-          this.listFiles.push({ name: file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' })
+        if(type.includes('inventary')){
+          this.listFiles.push({ name: file.name.length > 20 ? `${file.name.split('.')[0].substring(0,20)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' })
         }else{
           this.listFilesBills.push({ name: file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'Inconveniente al cargar la factura' })
         }
@@ -171,6 +185,7 @@ export class HomeComponent {
   }
 
   logout(){
+    sessionStorage.clear();
     this.router.navigate(['']);
   }
 
@@ -186,7 +201,7 @@ export class HomeComponent {
       
       for (let invoice of this.listFiles) {
         Swal.fire({
-          title: 'Cargando Factura',
+          title: 'Enviando Factura',
           html: 'Por favor espere',
           allowOutsideClick: false,
           customClass: {
@@ -204,19 +219,40 @@ export class HomeComponent {
           form.append('type', 'others__EEEzO');
           form.append('file', invoice.file);
     
-          await firstValueFrom(this.homeService.sendInvoice(form));
-  
+          const resultSendInvoice:any = await firstValueFrom(this.homeService.sendInvoice(form));
+          // console.log({resultSendInvoice});
+          
           Swal.close();
+
+          if(!!resultSendInvoice.error){
+            
+            Swal.fire({
+              title: resultSendInvoice.error,
+              icon: "error",
+              timer: 6000,
+              showConfirmButton: false
+            });
+          }else{
+
+            Swal.fire({
+              title: "Listo",
+              icon: "success",
+              timer: 4000,
+              showConfirmButton: false
+            });
+          }
   
-          Swal.fire({
-            title: "Listo",
-            icon: "success",
-            timer: 4000,
-            showConfirmButton: false
-          });
           
         } catch (error) {
+
           Swal.close();
+
+          Swal.fire({
+            title: 'Se presento incoveniente de red al cargar su factura, intentelo nuevamente.',
+            icon: "error",
+            timer: 6000,
+            showConfirmButton: false
+          });
         }
       }
       

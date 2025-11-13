@@ -31,5 +31,17 @@ export class AuthService {
     return jwtDecode<any>(jwt);
   }
 
-  
+  validSession(){
+    if(this.getToken()){
+      const token: any = jwtDecode(this.getToken() || '');
+
+      if(token && token.exp && Date.now() < token.exp*1000 ){
+        return true;
+      }else{
+        sessionStorage.clear();
+      }
+    }
+
+    return false;
+  }
 }

@@ -29,7 +29,9 @@
           </button>
         </mat-form-field>
       </form>
-
+      @if( errorLogin != ''){
+        <span class="textErrorLogin">{{ errorLogin }}</span>
+      }
     </div>
 
     <div class="contentButton">

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,11 +26,13 @@ import { AuthService } from '../../Services/auth.service';
 export class LoginComponent {
   hide = signal(true);
   formLogin: FormGroup;
+  public errorLogin= '';
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cd: ChangeDetectorRef
   ) {
     this.formLogin = this.fb.group({
       user: ['', Validators.required],
@@ -47,15 +49,27 @@ export class LoginComponent {
     let data = this.formLogin.getRawValue();
 
     if (this.formLogin.valid) {
-
+      this.errorLogin = '';
+      
       this.authService.login(data.user!, data.password!).subscribe({
         next: (res: any) => {
-          let decode = this.authService.decodeJwt(res.token.jwttoken);
-          // console.log(decode);
-
-          this.authService.userLogin = decode.nombre.split(' ')[0] + ' ' + decode.nombre.split(' ')[1];
-          // console.log(JSON.stringify({ res, decode }));
-          this.router.navigate(['/home']);
+          
+          if(!res.error){
+            let token  = res.token.jwttoken;
+            let token2 = ``;
+  
+            this.authService.saveToken(token);
+  
+            let decode = this.authService.decodeJwt(token);
+            // console.log(JSON.stringify(decode));
+            
+            this.authService.userLogin = decode.nombre.split(' ')[0] + ' ' + decode.nombre.split(' ')[1];
+            this.router.navigate(['/home']);
+          }else{
+            this.errorLogin = res.error;
+            this.cd.detectChanges();
+            
+          }
         },
       });
     }

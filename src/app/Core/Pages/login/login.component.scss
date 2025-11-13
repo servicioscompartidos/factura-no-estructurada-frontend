@@ -31,6 +31,10 @@
             ::ng-deep form .mat-mdc-form-field{
                 width: 100% !important;
             }
+            .textErrorLogin{
+                color: var(--red);
+                margin-top: -10px;
+            }
         }
         .contentButton{
             width: 100%;

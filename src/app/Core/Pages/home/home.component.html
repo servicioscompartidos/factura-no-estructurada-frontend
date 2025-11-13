@@ -8,9 +8,9 @@
     <div class="contentUploadInvioces">
         <span class="titleUpload">Carga de Facturas</span>
 
-        <mat-tab-group class="tap_group" mat-align-tabs="start" mat-stretch-tabs="false" (selectedTabChange)="onTabChanged($event)">
+        <mat-tab-group mat-align-tabs="start" mat-stretch-tabs="false" (selectedTabChange)="onTabChanged($event)">
             <mat-tab label="Inventario"> 
-                <div class="content_info_column">
+                <div class="content_infoColumn">
                     <span class="titleFilesUpload" style="margin-top: 15px;">Detalle</span>
 
                     <mat-form-field appearance="outline" [floatLabel]="'always'"  class="input_selectSupplier" style="margin-top: 20px;">
@@ -35,14 +35,28 @@
                             }
                         </mat-select>
                     </mat-form-field>
-    
-                    <label for="upfiles">
-                        <div class="uploadFiles">
-                                <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"></mat-icon>
-                                <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+
+                    <div class="optionsMobile">
+                        <div class="contntUploadFile">
+                            <label for="upMultifiles">
+                                <div class="uploadFiles">
+                                        <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon" matTooltip="Cargar facturas"></mat-icon>
+                                        <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+                                </div>
+                            </label>
+                            <input type="file" style="display: none;" (change)="onFilesSelected($event, 'inventary')" id="upMultifiles" accept="image/*" multiple>
                         </div>
-                    </label>
-                    <input type="file" style="display: none;" (change)="onFilesSelected($event, 'inventary')" id="upfiles" accept="image/*" multiple>
+                        <div class="contentUploadPhoto" >
+                            <label for="upPhoto">
+                                <div class="uploadFiles">
+                                        <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
+                                        <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span> Fotografía.</span>
+                                </div>
+                            </label>
+                            <input type="file" style="display: none;" capture="environment" (change)="onFilesSelected($event, 'inventaryPhoto')" id="upPhoto" accept="image/*" multiple>
+                        </div>
+                    </div> 
+    
                 </div>
                 
                 <div class="listFilesUpload">
@@ -61,20 +75,24 @@
                             </div>
                             <div class="content_iconsFile">
                                 <div class="icon_viewFile">
-                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" ></mat-icon>
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" matTooltip="Ver Factura"></mat-icon>
                                 </div>
                                 <div class="icon_deleteFile">
-                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'inventary')"></mat-icon>
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'inventary')" matTooltip="Eliminar Factura"></mat-icon>
                                 </div>
                             </div>
                         </div>
                     }
+                    @if(listFiles.length == 0){
+                        <div class="contentViewLoad"></div>
+                    }
+
                 </div>
 
             </mat-tab>
             <mat-tab label="Gasto"> 
                 <div class="content_expenseInvoices">
-                    <div class="content_info_column">
+                    <div class="content_infoColumn">
                         <span class="titleFilesUpload" style="margin-top: 15px;">Detalle</span>
 
                         <mat-form-field appearance="outline" [floatLabel]="'always'"  class="input_selectSupplier" style="margin-top: 20px;">
@@ -99,14 +117,28 @@
                                 }
                             </mat-select>
                         </mat-form-field>
-        
-                        <label for="upfiles">
-                            <div class="uploadFiles">
-                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"></mat-icon>
-                                    <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+
+                        <div class="optionsMobile">
+                            <div class="contntUploadFile">
+                                <label for="upMultifilesBills">
+                                    <div class="uploadFiles">
+                                            <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"  matTooltip="Cargar facturas"></mat-icon>
+                                            <span class="title_uploadFiles"><span class="text_press_upload">Presione aquí</span> para cargar sus facturas.</span>
+                                    </div>
+                                </label>
+                                <input type="file" style="display: none;" (change)="onFilesSelected($event, 'bills')" id="upMultifilesBills" accept="image/*" multiple>
                             </div>
-                        </label>
-                        <input type="file" style="display: none;" (change)="onFilesSelected($event, 'bills')" id="upfiles" accept="image/*" multiple>
+                            <div class="contentUploadPhoto" >
+                                <label for="upPhotoBills">
+                                    <div class="uploadFiles">
+                                            <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
+                                            <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span> Fotografia.</span>
+                                    </div>
+                                </label>
+                                <input type="file" style="display: none;" capture="environment" (change)="onFilesSelected($event, 'billsPhoto')" id="upPhotoBills" accept="image/*">
+                            </div>
+                        </div> 
+
                     </div>
 
                     <div class="listFilesUpload">
@@ -124,13 +156,17 @@
                             </div>
                             <div class="content_iconsFile">
                                 <div class="icon_viewFile">
-                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" ></mat-icon>
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);" svgIcon="eye_icon" (click)="viewFile(item)" matTooltip="Ver Factura"></mat-icon>
                                 </div>
                                 <div class="icon_deleteFile">
-                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'bills')"></mat-icon>
+                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);" svgIcon="delete_icon" (click)="deleteFile(i, 'bills')" matTooltip="Eliminar Factura"></mat-icon>
                                 </div>
                             </div>
                         </div>
+                        @if(listFilesBills.length == 0){
+                            <div class="contentViewLoad"></div>
+                        }
+                        
                     </div>
                 </div>
             </mat-tab>
