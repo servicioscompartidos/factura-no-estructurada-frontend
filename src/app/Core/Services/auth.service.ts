@@ -9,22 +9,41 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
 
   apiURLAuth = environment.apiAuth;
+  apiURL = environment.apiURL;
   userLogin: string | undefined;
+  userInfoLogin: string | undefined;
   nameKeyToken = 'USSER_TOKEN';
+  nameKeyInfo = 'USSER_INFO';
+
   constructor(private httpCliente: HttpClient) { }
 
   login(usuario:String, contrasenia:String){
     return this.httpCliente.post(`${this.apiURLAuth}/autenticacion`, { usuario, contrasenia });
   }
 
+  getInfoUser(idUser:number){
+    return this.httpCliente.get(`${this.apiURL}/user/info/${idUser}`);
+  }
+
   saveToken(token:any){
     sessionStorage.setItem(this.nameKeyToken, token);
+  }
+
+  saveInfoUser(token:any){
+    sessionStorage.setItem(this.nameKeyInfo, token);
   }
 
   getToken(){
     const usserToken = sessionStorage.getItem(this.nameKeyToken);
     
     return usserToken;
+  }
+  
+  getInfoSessionUser(){
+    const infoSession = sessionStorage.getItem(this.nameKeyInfo);
+    
+    return infoSession;
+
   }
 
   decodeJwt(jwt:string){

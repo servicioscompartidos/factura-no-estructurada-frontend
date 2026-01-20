@@ -13,4 +13,13 @@ export class HomeService {
   sendInvoice(data:any){
     return this.httpClient.post(`${this.apiURLAuth}/obtener-informacion`, data);
   }
+
+  getSuppliers(id:number, company:number){
+    return this.httpClient.get(`${this.apiURLAuth}/proveedores/${id}/${company}`);
+  }
+
+  getModels(id:number){
+    return this.httpClient.get(`${this.apiURLAuth}/models/${id}`);
+  }
+
 }
