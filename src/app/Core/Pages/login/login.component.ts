@@ -6,8 +6,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { jwtDecode } from 'jwt-decode';
 import { AuthService } from '../../Services/auth.service';
+import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-login',
@@ -38,6 +38,7 @@ export class LoginComponent {
       user: ['', Validators.required],
       password: ['', Validators.required],
     });
+
   }
 
   clickEvent(event: MouseEvent) {
@@ -51,24 +52,57 @@ export class LoginComponent {
     if (this.formLogin.valid) {
       this.errorLogin = '';
       
+      Swal.fire({
+        title: 'Iniciando sesión',
+        html: '',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
       this.authService.login(data.user!, data.password!).subscribe({
         next: (res: any) => {
-          
           if(!res.error){
             let token  = res.token.jwttoken;
-            let token2 = ``;
-  
-            this.authService.saveToken(token);
-  
-            let decode = this.authService.decodeJwt(token);
-            // console.log(JSON.stringify(decode));
             
-            this.authService.userLogin = decode.nombre.split(' ')[0] + ' ' + decode.nombre.split(' ')[1];
-            this.router.navigate(['/home']);
+            this.authService.saveToken(token);
+            
+            let decode = this.authService.decodeJwt(token);
+            
+            this.authService.getInfoUser(decode?.id).subscribe({
+              next: (infoUserResult:any) => {
+                
+                this.authService.saveInfoUser(JSON.stringify(infoUserResult.data[0]));
+                this.authService.userInfoLogin = infoUserResult.data[0]
+                this.authService.userLogin = decode.nombre.split(' ')[0] + ' ' + decode.nombre.split(' ')[1];
+
+                Swal.close();
+                this.router.navigate(['/home']);
+              },
+              error: e => {
+                this.cd.detectChanges();
+                Swal.close();
+                
+                Swal.fire({
+                  title: 'Credenciales invalidas, intente nuevamente.',
+                  icon: "error",
+                  timer: 4000,
+                  showConfirmButton: false
+                });
+              }
+            })
           }else{
             this.errorLogin = res.error;
             this.cd.detectChanges();
+            Swal.close();
             
+            Swal.fire({
+              title: 'Credenciales invalidas, intente nuevamente.',
+              icon: "error",
+              timer: 4000,
+              showConfirmButton: false
+            });
           }
         },
       });
