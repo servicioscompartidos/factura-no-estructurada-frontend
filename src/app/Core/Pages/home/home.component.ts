@@ -376,6 +376,7 @@ export class HomeComponent {
             form.append('shop', this.infoUser.gasstationid);
             form.append('account', this.infoUser.accgasstationid);
             form.append('country', this.infoUser.avaloncustomercompanyid);
+            form.append('cif', this.supplier.value.cif);
             form.append('ismultiple', '0');
       
             for (const file of this.listFiles) {
