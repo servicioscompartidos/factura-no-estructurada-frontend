@@ -65,141 +65,144 @@
                                 </div>
                             </label>
                             <input type="file" style="display: none;" capture="environment"
-                                (change)="onFileCapture($event)" id="upPhoto" name="upPhoto" accept="image/*">
+                                (change)="onFileCapture($event, 'inventary')" id="upPhoto" name="upPhoto" accept="image/*">
                         </div>
                     </div>
                     }@else {
-                        <mat-stepper #stepper [linear]="true">
-                            <mat-step [completed]="!!headerInvoice">
-                                <ng-template matStepLabel>Encabezado</ng-template>
-                                <p style="font-size: 12px; margin: 0; margin-bottom: 14px;"><b>Cargue fotografía del encabezado de la factura.</b></p>
-                                <div class="optionsMobile">
-                                    <div class="contntUploadFile">
-                                        <label for="headerInvoice">
-                                            <div class="uploadFiles">
-                                                <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"
-                                                    matTooltip="Cargar facturas"></mat-icon>
-                                                <span class="title_uploadFiles"><span class="text_press_upload">Cargar</span>
-                                                    encabezado.</span>
-                                            </div>
-                                        </label>
-                                        <input type="file" style="display: none;" (change)="loadInvoiceMultiple($event, 'header')"
-                                            id="headerInvoice" accept="image/*">
+                        <div style="float:left"><mat-stepper #stepper [linear]="true">
+                                <mat-step [completed]="!!headerInvoice">
+                                    <ng-template matStepLabel>Encabezado</ng-template>
+                                    <p style="font-size: 12px; margin: 0; margin-bottom: 14px;"><b>Cargue fotografía del encabezado de la factura.</b></p>
+                                    <div class="optionsMobile">
+                                        <div class="contntUploadFile">
+                                            <label for="headerInvoice">
+                                                <div class="uploadFiles">
+                                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"
+                                                        matTooltip="Cargar facturas"></mat-icon>
+                                                    <span class="title_uploadFiles"><span class="text_press_upload">Cargar</span>
+                                                        encabezado.</span>
+                                                </div>
+                                            </label>
+                                            <input type="file" style="display: none;" (change)="loadInvoiceMultiple($event, 'header')"
+                                                id="headerInvoice" accept="image/*">
+                                        </div>
+                                        <div class="contentUploadPhoto">
+                                            <label for="captureHeader">
+                                                <div class="uploadFiles">
+                                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
+                                                    <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span>
+                                                        fotografía.</span>
+                                                </div>
+                                            </label>
+                                            <input type="file" style="display: none;" capture="environment"
+                                                (change)="onFileCapture($event,'header')" id="captureHeader" accept="image/*">
+                                        </div>
                                     </div>
-                                    <div class="contentUploadPhoto">
-                                        <label for="captureHeader">
-                                            <div class="uploadFiles">
-                                                <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
-                                                <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span>
-                                                    fotografía.</span>
+    
+                                    <div class="listFilesUpload sw-header" >
+                                        @if(headerInvoice){
+                                        <span class="titleFilesUpload">Encabezado de la factura</span>
+                                            <div class="contentFile">
+                                                <div class="infoFile">
+                                                    <mat-icon style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
+                                                    <div class="contentDetail">
+                                                        <span class="nameFile"><b>{{ headerInvoice.name }}</b></span>
+                                                        <span class="sizeFile"><b>Tamaño:</b> {{headerInvoice.size}} </span>
+                                                        <!-- @if( headerInvoice.error.length > 0){
+                                                        <span class="errorLoadFile"> {{headerInvoice.error}} </span>
+                                                        } -->
+                                                    </div>
+                                                </div>
+                                                <div class="content_iconsFile">
+                                                    <div class="icon_viewFile">
+                                                        <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);"
+                                                            svgIcon="eye_icon" (click)="viewFile(headerInvoice)" matTooltip="Encabezado de la factura"></mat-icon>
+                                                    </div>
+                                                    <div class="icon_deleteFile">
+                                                        <mat-icon style="width: 30px; height: auto;" style="color: var(--red);"
+                                                            svgIcon="delete_icon" (click)="deleteHeader()"
+                                                            matTooltip="Eliminar Factura"></mat-icon>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </label>
-                                        <input type="file" style="display: none;" capture="environment"
-                                            (change)="onFileCapture($event)" id="captureHeader" accept="image/*">
+                                        }
+    
                                     </div>
-                                </div>
-
-                                <div class="listFilesUpload sw-header" >
-                                    @if(headerInvoice){
-                                    <span class="titleFilesUpload">Encabezado de la factura</span>
-                                        <div class="contentFile">
-                                            <div class="infoFile">
-                                                <mat-icon style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
-                                                <div class="contentDetail">
-                                                    <span class="nameFile"><b>{{ headerInvoice.name }}</b></span>
-                                                    <span class="sizeFile"><b>Tamaño:</b> {{headerInvoice.size}} </span>
-                                                    <!-- @if( headerInvoice.error.length > 0){
-                                                    <span class="errorLoadFile"> {{headerInvoice.error}} </span>
-                                                    } -->
+    
+                                    <div style="position: relative; display: flex; justify-content: end;" class="mt-btnheader">
+                                        <button style="padding: 6px 15px;" mat-flat-button color="#002E6D" matStepperNext [disabled]="!headerInvoice" >Siguiente</button>
+                                    </div>
+                                </mat-step>
+    
+                                <mat-step>
+                                    <ng-template matStepLabel>Factura</ng-template>
+                                    <p style="font-size: 12px; margin: 0; margin-bottom: 14px;"><b>Subir fotografía de la lista de los productos y totales de la factura.</b></p>
+                                    <div class="optionsMobile">
+                                        <div class="contntUploadFile">
+                                            <label for="upBodyMultifiles">
+                                                <div class="uploadFiles">
+                                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"
+                                                        matTooltip="Cargar facturas"></mat-icon>
+                                                    <span class="title_uploadFiles"><span class="text_press_upload">Cargar</span>
+                                                        fotografía.</span>
+                                                </div>
+                                            </label>
+                                            <input type="file" style="display: none;" (change)="loadInvoiceMultiple($event, 'body')"
+                                                id="upBodyMultifiles" accept="image/*" multiple>
+                                        </div>
+                                        <div class="contentUploadPhoto">
+                                            <label for="upBodyPhoto">
+                                                <div class="uploadFiles">
+                                                    <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
+                                                    <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span>
+                                                        fotografía.</span>
+                                                </div>
+                                            </label>
+                                            <input type="file" style="display: none;" capture="environment"
+                                                (change)="onFileCapture($event, 'body')" id="upBodyPhoto"  accept="image/*">
+                                        </div>
+                                    </div>
+                                    @if(listBodyInvoice.length > 0){
+                                        <div class="listFilesUpload sw-header">
+                                            @for(item of listBodyInvoice; track item; let i = $index){
+                                            <div class="contentFile">
+                                                <div class="infoFile">
+                                                    <mat-icon style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
+                                                    <div class="contentDetail">
+                                                        <span class="nameFile"><b>{{ item.name }}</b></span>
+                                                        <span class="sizeFile"><b>Tamaño:</b> {{item.size}} </span>
+                                                        @if( item.error.length > 0){
+                                                        <span class="errorLoadFile"> {{item.error}} </span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="content_iconsFile">
+                                                    <div class="icon_viewFile">
+                                                        <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);"
+                                                            svgIcon="eye_icon" (click)="viewFile(item)" matTooltip="Ver Factura"></mat-icon>
+                                                    </div>
+                                                    <div class="icon_deleteFile">
+                                                        <mat-icon style="width: 30px; height: auto;" style="color: var(--red);"
+                                                            svgIcon="delete_icon" (click)="deleteFile(i, 'body')"
+                                                            matTooltip="Eliminar Factura"></mat-icon>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="content_iconsFile">
-                                                <div class="icon_viewFile">
-                                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);"
-                                                        svgIcon="eye_icon" (click)="viewFile(headerInvoice)" matTooltip="Encabezado de la factura"></mat-icon>
-                                                </div>
-                                                <div class="icon_deleteFile">
-                                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);"
-                                                        svgIcon="delete_icon" (click)="deleteHeader()"
-                                                        matTooltip="Eliminar Factura"></mat-icon>
-                                                </div>
-                                            </div>
+                                            }
+               
                                         </div>
                                     }
-
-                                </div>
-
-                                <div style="position: relative; display: flex; justify-content: end;" class="mt-btnheader">
-                                    <button style="padding: 6px 15px;" mat-flat-button color="#002E6D" matStepperNext [disabled]="!headerInvoice" >Siguiente</button>
-                                </div>
-                            </mat-step>
-
-                            <mat-step>
-                                <ng-template matStepLabel>Factura</ng-template>
-                                <p style="font-size: 12px; margin: 0; margin-bottom: 14px;"><b>Subir fotografía de la lista de los productos y totales de la factura.</b></p>
-                                <div class="optionsMobile">
-                                    <div class="contntUploadFile">
-                                        <label for="upBodyMultifiles">
-                                            <div class="uploadFiles">
-                                                <mat-icon style="width: 35px; height: 27px;" svgIcon="upload_icon"
-                                                    matTooltip="Cargar facturas"></mat-icon>
-                                                <span class="title_uploadFiles"><span class="text_press_upload">Cargar</span>
-                                                    fotografía.</span>
-                                            </div>
-                                        </label>
-                                        <input type="file" style="display: none;" (change)="loadInvoiceMultiple($event, 'body')"
-                                            id="upBodyMultifiles" accept="image/*" multiple>
+    
+                                    <div style="margin-top:12px; display: flex; justify-content: end; " class="mt-btnheader">
+                                        <button style="margin-right: 12px; padding-left: 17px; padding-right: 17px;" mat-button matStepperPrevious>Regresar</button>
+                                        <button mat-flat-button matStepperNext [disabled]="listBodyInvoice.length == 0 || !headerInvoice" (click)="sendInvoiceMultipleModel()">Enviar Factura</button>
                                     </div>
-                                    <div class="contentUploadPhoto">
-                                        <label for="upBodyPhoto">
-                                            <div class="uploadFiles">
-                                                <mat-icon style="width: 35px; height: 27px;" svgIcon="photo_icon"></mat-icon>
-                                                <span class="title_uploadFiles"><span class="text_press_upload">Tomar</span>
-                                                    fotografía.</span>
-                                            </div>
-                                        </label>
-                                        <input type="file" style="display: none;" capture="environment"
-                                            (change)="onFileCapture($event)" id="upBodyPhoto"  accept="image/*">
-                                    </div>
-                                </div>
-                                @if(listBodyInvoice.length > 0){
-                                    <div class="listFilesUpload sw-header">
-                                        @for(item of listBodyInvoice; track item; let i = $index){
-                                        <div class="contentFile">
-                                            <div class="infoFile">
-                                                <mat-icon style="width: 30px; height: 27px;" svgIcon="check_icon"></mat-icon>
-                                                <div class="contentDetail">
-                                                    <span class="nameFile"><b>{{ item.name }}</b></span>
-                                                    <span class="sizeFile"><b>Tamaño:</b> {{item.size}} </span>
-                                                    @if( item.error.length > 0){
-                                                    <span class="errorLoadFile"> {{item.error}} </span>
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div class="content_iconsFile">
-                                                <div class="icon_viewFile">
-                                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--blue);"
-                                                        svgIcon="eye_icon" (click)="viewFile(item)" matTooltip="Ver Factura"></mat-icon>
-                                                </div>
-                                                <div class="icon_deleteFile">
-                                                    <mat-icon style="width: 30px; height: auto;" style="color: var(--red);"
-                                                        svgIcon="delete_icon" (click)="deleteFile(i, 'body')"
-                                                        matTooltip="Eliminar Factura"></mat-icon>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        }
-           
-                                    </div>
-                                }
+                                </mat-step>
+                               
+                            </mat-stepper>
+                            
 
-                                <div style="margin-top:12px; display: flex; justify-content: end; " class="mt-btnheader">
-                                    <button style="margin-right: 12px; padding-left: 17px; padding-right: 17px;" mat-button matStepperPrevious>Regresar</button>
-                                    <button mat-flat-button matStepperNext [disabled]="listBodyInvoice.length == 0 || !headerInvoice" (click)="sendInvoiceMultipleModel()">Enviar Factura</button>
-                                </div>
-                            </mat-step>
-                           
-                        </mat-stepper>
+                        </div>
                     }
 
                 </div>

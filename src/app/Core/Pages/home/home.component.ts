@@ -280,15 +280,35 @@ export class HomeComponent {
     this.typesInvoicesInventory = list;
   }
 
-  onFileCapture(e:any){
+  onFileCapture(e:any, type:string){
 
-    const input = e.target as HTMLInputElement;
+    let input = e.target as HTMLInputElement;
     if (!input.files || input.files.length === 0) return;
 
-    const file = input.files[0];
+    if(type == 'inventary'){
+      const file = input.files[0];
+      
+      let sizeKb = (file.size/1000).toFixed(2);
+      this.listFiles.push({ name: file.name.length > 20 ? `${file.name.split('.')[0].substring(0,20)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' });
+      
+    }else if(type == 'header'){
 
-    let sizeKb = (file.size/1000).toFixed(2);
-    this.listFiles.push({ name: file.name.length > 20 ? `${file.name.split('.')[0].substring(0,20)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' })
+      const file = input.files[0];
+      this.headerInvoice = file;
+      input.value = '';
+
+    }else if(type == 'body'){
+
+      const archivos = Array.from(input.files);
+        
+      archivos.forEach(file => {
+        let sizeKb = (file.size/1000).toFixed(2);
+        this.listBodyInvoice.push({ name: file.name.length > 20 ? `${file.name.split('.')[0].substring(0,20)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' });
+      });
+
+      input.value = '';
+
+    }
     
   }
 
@@ -347,7 +367,7 @@ export class HomeComponent {
 
   async sendInvoices(){
 
-    if(this.indexTap == 0){
+    if(this.indexTap == 0 && this.listFiles.length > 0){
       
       Swal.fire({
         title: "Envió de factura",
