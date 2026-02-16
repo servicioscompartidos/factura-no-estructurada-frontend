@@ -303,7 +303,7 @@ export class HomeComponent {
         
       archivos.forEach(file => {
         let sizeKb = (file.size/1000).toFixed(2);
-        this.listBodyInvoice.push({ name: file.name.length > 20 ? `${file.name.split('.')[0].substring(0,20)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' });
+        this.listBodyInvoice.push({ name: file.name.length > 10 ? `${file.name.split('.')[0].substring(0,10)}.${file.name.split('.')[1]} ` : file.name, size: parseFloat(sizeKb) > 1000 ? `${(parseFloat(sizeKb)/1000).toFixed(2)} MB` : `${sizeKb} KB`, file, error:'' });
       });
 
       input.value = '';
@@ -344,6 +344,11 @@ export class HomeComponent {
   logout(){
     sessionStorage.clear();
     this.router.navigate(['']);
+  }
+
+  sizeFileHeader(size:number){
+    let sizeKb = (size/1000).toFixed(2);
+    return parseFloat(sizeKb) > 1000 ? ((parseFloat(sizeKb)/1000).toFixed(2)+' MB') : (sizeKb +' KB');
   }
 
   typeInvoiceSelect(e:any, type: string){

@@ -15,7 +15,14 @@ export class AuthService {
   nameKeyToken = 'USSER_TOKEN';
   nameKeyInfo = 'USSER_INFO';
 
-  constructor(private httpCliente: HttpClient) { }
+  constructor(private httpCliente: HttpClient) { 
+    const usserToken = sessionStorage.getItem(this.nameKeyToken);
+    
+    if(!!usserToken){
+      let decode = this.decodeJwt(usserToken);
+      this.userLogin = decode.nombre.split(' ')[0] + ' ' + decode.nombre.split(' ')[1];
+    }
+  }
 
   login(usuario:String, contrasenia:String){
     return this.httpCliente.post(`${this.apiURLAuth}/autenticacion`, { usuario, contrasenia });
