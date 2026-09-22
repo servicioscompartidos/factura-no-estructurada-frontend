@@ -1,0 +1,18 @@
+services:
+  rfpc-web:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: rfpc-web:latest
+    container_name: rfpc-web
+    restart: always
+    ports:
+      - "10021:80"
+    environment:
+      TZ: America/Tegucigalpa
+    networks:
+      - operacion-net
+
+networks:
+  operacion-net:
+    external: true
