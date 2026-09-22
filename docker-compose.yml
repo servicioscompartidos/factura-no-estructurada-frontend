@@ -1,10 +1,10 @@
 services:
-  rfpc-web:
+  rfpc-web2:
     build:
       context: .
       dockerfile: dockerfile
-    image: rfpc-web:latest
-    container_name: rfpc-web
+    image: rfpc-web2:latest
+    container_name: rfpc-web2
     restart: always
     ports:
       - "10021:80"
