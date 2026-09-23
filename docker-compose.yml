@@ -7,7 +7,7 @@ services:
     container_name: rfpc-web
     restart: always
     ports:
-      - "10022:80"
+      - "10021:80"
     environment:
       TZ: America/Tegucigalpa
     networks:
