@@ -1,13 +1,13 @@
 services:
-  rfpc-web2:
+  rfpc-web:
     build:
       context: .
       dockerfile: dockerfile
-    image: rfpc-web2:latest
-    container_name: rfpc-web2
+    image: rfpc-web:latest
+    container_name: rfpc-web
     restart: always
     ports:
-      - "10022:80"
+      - "10021:80"
     environment:
       TZ: America/Tegucigalpa
     networks:
