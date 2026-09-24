@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { jwtDecode } from 'jwt-decode';
+import { sinAviso } from '../Interceptors/http-context.tokens';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class AuthService {
   }
 
   getInfoUser(idUser:number){
-    return this.httpCliente.get(`${this.apiURL}/user/info/${idUser}`);
+    return this.httpCliente.get(`${this.apiURL}/user/info/${idUser}`, sinAviso());
   }
 
   saveToken(token:any){
